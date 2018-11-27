@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -13,8 +14,16 @@
       <Slider fx:id="sliderR" blockIncrement="1.0" layoutX="106.0" layoutY="56.0" max="255.0" value="130.0" />
       <Slider fx:id="sliderG" blockIncrement="1.0" layoutX="106.0" layoutY="86.0" max="255.0" value="130.0" />
       <Slider fx:id="sliderB" blockIncrement="1.0" layoutX="106.0" layoutY="114.0" max="255.0" value="130.0" />
+      <Spinner fx:id="spinner" BorderPane.alignment="CENTER" layoutX="356.0" layoutY="56.0" >
+         <valueFactory>
+            <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="255" value="130"/>
+         </valueFactory>
+      </Spinner>
       <CheckBox fx:id="checkBoxColor" layoutX="106.0" layoutY="242.0" mnemonicParsing="false" text="Show Color Name" />
-      <Label fx:id="colorLabel" layoutX="106.0" layoutY="277.0" prefHeight="21.0" prefWidth="49.0" text="Label" visible="false" />
+      <Label fx:id="colorLabel" layoutX="106.0" layoutY="277.0" prefHeight="21.0" prefWidth="163.0" text="Label" visible="false">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Label>
       <Label layoutX="56.0" layoutY="55.0" text="R" />
       <Label layoutX="56.0" layoutY="85.0" text="G" />
       <Label layoutX="56.0" layoutY="113.0" text="B" />

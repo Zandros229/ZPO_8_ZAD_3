@@ -10,7 +10,9 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
 
 import java.awt.Color;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.*;
 
@@ -66,33 +68,31 @@ HashMap<String, Double> colors=new HashMap<String, Double>();
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                     colorLabel.setVisible(newValue);
                     colorName();
-               
+
             }
         });
     }
     private void colorName(){
-        String temp;
-        String[] c={"RED","BLACK","GREY","GREEN","BLUE","WHITE","YELLOW","LIGHTGREY","DARKGERY","PINK","ORANGE","CYAN","MAGENTA"};
-        try {
-            Class cl = Class.forName("Color");
-            //Method method = cl.getMethod(c[i]);
-            for (int i = 0; i < c.length; i++) {
-                temp = c[i];
-                //Color color = new Color(cl.getMethod(c[i]), Color.getColor(temp).getGreen(), getColor(temp).getBlue());
-                //colors.put(temp, (Math.abs(sliderR.getValue() - color.getRed())) + Math.abs(sliderG.getValue() - color.getGreen()) + (Math.abs(sliderB.getValue() - color.getBlue())));
+        Field[] colors = Color.class.getFields();
+        ArrayList<ColorMyClass> list=new ArrayList<ColorMyClass>();
+        for(int i = 1; i < colors.length; i+= 2) {
+            Field f = colors[i];
+            if(/*Modifier.isStatic(f.getModifiers()) && Modifier.isPublic(f.getModifiers())&&*/f.getName().equals(f.getName().toUpperCase())) {
+                try {
+                    Color c = (Color) f.get(f);
+                    int[] rgb = {c.getRed(), c.getGreen(), c.getBlue()};
+                    int[] value={(int)sliderR.getValue(),(int)sliderG.getValue(),(int)sliderB.getValue()};
+                    list.add(new ColorMyClass(f.getName(),getDistance(rgb,value)));
+                    //System.out.println(list.get(0));
+                } catch (Exception e) {
+                    //e.printStackTrace();
+                }
             }
-            List<Double> mapValues = new ArrayList<Double>(colors.values());
-            Collections.sort(mapValues);
-            for (int i = 0; i < colors.size(); i++) {
-                if (colors.get(c[i]) == mapValues.get(0))
-                    colorLabel.setText(c[i]);
-            }
-        } catch(ClassNotFoundException e){
-            System.out.println(e.getMessage());
-            System.out.println("Zła klasa");
-        }catch(Exception e){
-            e.printStackTrace();
         }
+        Collections.sort(list);
+        colorLabel.setText(list.get(0).name);
     }
-
+    private Integer getDistance(int[] a, int[] b){
+        return Math.abs(a[0]-b[0])+Math.abs(a[1]-b[1])+Math.abs(a[2]-b[2]);
+    }
 }
